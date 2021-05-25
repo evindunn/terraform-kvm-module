@@ -27,7 +27,6 @@ provider "local" {}
 
 module "vms" {
   source      = "/path/to/terraform-kvm-module"
-  pool_name   = "test-vms"
   node_count  = 1
 }
 
@@ -39,7 +38,6 @@ output "vms" {
 # Required variables
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| pool_name | string | The name of the disk pool to create |
 | node_count | number | The number of identical vms to create | 
                                                                                            
 # Optional variables

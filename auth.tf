@@ -15,10 +15,3 @@ resource "local_file" "cluster_ssh_pub" {
   content         = tls_private_key.cluster_ssh.public_key_openssh
 }
 
-output "private_key" {
-   value = "Private key written to ${local_file.cluster_ssh_priv.filename}"
-}
-
-output "public_key" {
-   value = "Public key written to ${local_file.cluster_ssh_pub.filename}"
-}

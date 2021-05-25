@@ -1,3 +1,11 @@
+output "private_key" {
+  value = local_file.cluster_ssh_priv.filename
+}
+
+output "public_key" {
+  value = local_file.cluster_ssh_pub.filename
+}
+
 output "vms" {
   value = [
     for node_idx in range(var.node_count) : {
@@ -6,3 +14,4 @@ output "vms" {
     }
   ]
 }
+

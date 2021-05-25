@@ -1,8 +1,8 @@
 # Required
 
-variable "pool_name" {
+variable "hostname_prefix" {
   type        = string
-  description = "The name of the disk pool to create"
+  description = "Prefix for the VM names"
 }
 
 variable "node_count" {
@@ -11,6 +11,12 @@ variable "node_count" {
 }
 
 # Optional
+
+variable "ansible_playbook" {
+  type        = string
+  description = "An optional playbook to run on all hosts"
+  default     = null
+}
 
 variable "base_image" {
   type        = string
@@ -49,7 +55,6 @@ variable "data_volumes" {
 variable "network" {
   description = "The network configuration for the hosts"
   type        = object({
-    hostname_prefix = string
     subnet          = string
     prefix          = number
     ip_start        = number
@@ -71,6 +76,7 @@ variable "network" {
 
 locals {
   ssh_key_pair_prefix = "terraform_${uuid()}"
+  pool_name           = var.hostname_prefix
   network = {
     ip_prefix = join(".", slice(split(".", var.network.subnet), 0, 3))
   }

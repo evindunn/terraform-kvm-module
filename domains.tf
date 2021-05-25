@@ -3,9 +3,9 @@ locals {
 }
 
 resource "libvirt_pool" "disk_pool" {
-  name = var.pool_name
+  name = local.pool_name
   type = "dir"
-  path = "/var/lib/libvirt/images/${var.pool_name}"
+  path = "/var/lib/libvirt/images/${local.pool_name}"
 }
 
 resource "libvirt_volume" "base_image" {
@@ -31,8 +31,9 @@ resource "libvirt_cloudinit_disk" "cloud_inits" {
   user_data       = templatefile(
     "${path.module}/templates/cloud_init.cfg",
     {
-      hostname              = "${var.network.hostname_prefix}${count.index}.${var.network.dns_domain}"
+      hostname              = "${var.hostname_prefix}${count.index}.${var.network.dns_domain}"
       ssh_key               = chomp(tls_private_key.cluster_ssh.public_key_openssh)
+      ansible_playbook      = var.ansible_playbook
     }
   )
 }
@@ -40,7 +41,7 @@ resource "libvirt_cloudinit_disk" "cloud_inits" {
 resource "libvirt_volume" "os_volumes" {
   count           = var.node_count
   base_volume_id  = libvirt_volume.base_image.id
-  name            = "${var.network.hostname_prefix}${count.index}.qcow2"
+  name            = "${var.hostname_prefix}${count.index}.qcow2"
   pool            = libvirt_pool.disk_pool.name
   format          = "qcow2"
   size            = var.os_disk_size
@@ -56,7 +57,7 @@ resource "libvirt_volume" "os_volumes" {
 
 resource "libvirt_domain" "vms" {
   count           = var.node_count
-  name            = "${var.network.hostname_prefix}${count.index}"
+  name            = "${var.hostname_prefix}${count.index}"
   vcpu            = var.cpu_count
   memory          = var.ram_size
   cloudinit       = libvirt_cloudinit_disk.cloud_inits[count.index].id
@@ -75,7 +76,7 @@ resource "libvirt_domain" "vms" {
 
   network_interface {
     network_id  = libvirt_network.net.id
-    hostname    = "${var.network.hostname_prefix}${count.index}"
+    hostname    = "${var.hostname_prefix}${count.index}"
     addresses   = ["${local.network.ip_prefix}.${var.network.ip_start + count.index}"]
   }
 }

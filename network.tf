@@ -15,7 +15,7 @@ resource "libvirt_network" "net" {
       for_each = range(var.node_count)
       iterator = idx
       content {
-        hostname  = "${var.network.hostname_prefix}${idx.value}"
+        hostname  = "${var.hostname_prefix}${idx.value}"
         ip        = "${local.network.ip_prefix}.${var.network.ip_start + idx.value}"
       }
     }

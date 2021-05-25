@@ -45,6 +45,7 @@ output "vms" {
 # Optional variables
 | Name | Type | Description | Default |
 | ---- | ---- | ----------- | ------- |
+| ansible_playbook | string | Path to ansible playbook to run on first boot | null |
 | base_image | string | Cloud base image for the VMs | [Debian generic cloud image](https://cdimage.debian.org/cdimage/cloud/buster/daily/20210129-530/debian-10-genericcloud-amd64-daily-20210129-530.qcow2) |
 | cpu_count | number | The number of vcpus for each VM | 2 |
 | ram_size | number | The amount of RAM for each VM (MiB) | 2048 |

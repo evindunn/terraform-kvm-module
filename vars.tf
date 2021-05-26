@@ -48,7 +48,7 @@ variable "data_volumes" {
 
   default = {
     count = 0
-    size  = 1049000 # 1MiB
+    size  = 1074000000 # 1GiB
   }
 }
 
@@ -77,7 +77,7 @@ variable "network" {
 locals {
   ssh_key_pair_prefix = "terraform_${uuid()}"
   pool_name           = var.hostname_prefix
-  network = {
+  network             = {
     ip_prefix = join(".", slice(split(".", var.network.subnet), 0, 3))
   }
 }

@@ -47,13 +47,19 @@ resource "libvirt_volume" "os_volumes" {
   size            = var.os_disk_size
 }
 
-# resource "libvirt_volume" "data_volumes" {
-#     count           = var.node_count * var.
-#     name            = "${hostname_prefix}${count.index}_data.img"
-#     pool            = libvirt_pool.disk_pool.name
-#     format          = "raw"
-#     size            = 17179869184 # 16GiB
-# }
+resource "libvirt_volume" "data_volumes" {
+    for_each        = toset(
+      flatten([
+        for node_idx in range(var.node_count) : [
+          for vol_idx in range(var.data_volumes.count): "${var.hostname_prefix}${node_idx}_data${vol_idx}.img"
+        ]
+      ])
+    )
+    name            = each.value
+    pool            = libvirt_pool.disk_pool.name
+    format          = "raw"
+    size            = var.data_volumes.size
+}
 
 resource "libvirt_domain" "vms" {
   count           = var.node_count
@@ -72,6 +78,18 @@ resource "libvirt_domain" "vms" {
   disk {
     volume_id = libvirt_volume.os_volumes[count.index].id
     scsi      = true
+  }
+
+  dynamic "disk" {
+    for_each  = toset([
+      for vol_name, vol in libvirt_volume.data_volumes : 
+        vol if split("_", vol.name)[0] == "${var.hostname_prefix}${count.index}"
+    ])
+    iterator = disk
+    content {
+      volume_id = disk.value.id
+      scsi      = true
+    }
   }
 
   network_interface {

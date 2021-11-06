@@ -39,6 +39,7 @@ output "vms" {
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | node_count | number | The number of identical vms to create | 
+| network_id | string | The id of the libvirt_network to use for the vms |
                                                                                            
 # Optional variables
 | Name | Type | Description | Default |
@@ -49,11 +50,5 @@ output "vms" {
 | data_volumes.size | number | The size of each data disk for each VM (bytes) | 1074000000 (1GiB) |
 | cpu_count | number | The number of vcpus for each VM | 2 |
 | hostname_prefix | string | The hostname prefix for each VM | node |
-| network.dns_domain | string | Domain suffix for the subnet | localdomain.net |
-| network.dns_servers | list(string) | List of dns servers for the VM subnet | ["192.168.110.1"] |
-| network.gateway | string | Gateway for the VM subnet | 192.168.110.1 |
-| network.ip_start | number | Last octet (in decimal) of the first VM's IP | 2 |
-| network.prefix | number | The network prefix for the VM subnet | 24 |
-| network.subnet | string | The IP address for the VM subnet | 192.168.110.0 |
 | os_disk_size | number | Size of the OS disk for each VM (bytes) | 8590000000 (8 GiB) |
 | ram_size | number | The amount of RAM for each VM (MiB) | 2048 |

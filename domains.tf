@@ -19,19 +19,11 @@ resource "libvirt_cloudinit_disk" "cloud_inits" {
   count           = var.node_count
   name            = "cloud_init_${count.index}.iso"
   pool            = libvirt_pool.disk_pool.name
-  network_config  = templatefile(
-    "${path.module}/templates/network.cfg",
-    {
-      ip            = "${local.network.ip_prefix}.${var.network.ip_start + count.index}"
-      gateway       = "${var.network.gateway}"
-      dns_servers   = var.network.dns_servers
-      domain        = var.network.dns_domain
-    }
-  )
+  network_config  = file("${path.module}/files/network.cfg")
   user_data       = templatefile(
     "${path.module}/templates/cloud_init.cfg",
     {
-      hostname              = "${var.hostname_prefix}${count.index}.${var.network.dns_domain}"
+      hostname              = "${var.hostname_prefix}${count.index}"
       ssh_key               = chomp(tls_private_key.cluster_ssh.public_key_openssh)
       ansible_playbook      = var.ansible_playbook
     }
@@ -93,9 +85,8 @@ resource "libvirt_domain" "vms" {
   }
 
   network_interface {
-    network_id  = libvirt_network.net.id
+    network_id  = var.network_id
     hostname    = "${var.hostname_prefix}${count.index}"
-    addresses   = ["${local.network.ip_prefix}.${var.network.ip_start + count.index}"]
   }
 }
 

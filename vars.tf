@@ -52,33 +52,12 @@ variable "data_volumes" {
   }
 }
 
-variable "network" {
-  description = "The network configuration for the hosts"
-  type        = object({
-    subnet          = string
-    prefix          = number
-    ip_start        = number
-    gateway         = string
-    dns_servers     = list(string)
-    dns_domain      = string
-  })
-
-  default = {
-    hostname_prefix = "node"
-    subnet          = "192.168.110.0"
-    prefix          = 24
-    ip_start        = 2
-    gateway         = "192.168.110.1"
-    dns_servers     = ["192.168.110.1"]
-    dns_domain      = "localdomain.net"
-  }
+variable "network_id" {
+  description = "The libvirt_network ID for the hosts"
 }
 
 locals {
   ssh_key_pair_prefix = "terraform_${uuid()}"
   pool_name           = var.hostname_prefix
-  network             = {
-    ip_prefix = join(".", slice(split(".", var.network.subnet), 0, 3))
-  }
 }
 

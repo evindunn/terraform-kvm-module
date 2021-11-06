@@ -56,6 +56,12 @@ variable "network_id" {
   description = "The libvirt_network ID for the hosts"
 }
 
+variable "mac_addresses" {
+  description = "A list of mac addresses for the hosts"
+  type        = list(string)
+  default     = []
+}
+
 locals {
   ssh_key_pair_prefix = "terraform_${uuid()}"
   pool_name           = var.hostname_prefix

@@ -87,6 +87,7 @@ resource "libvirt_domain" "vms" {
   network_interface {
     network_id  = var.network_id
     hostname    = "${var.hostname_prefix}${count.index}"
+    mac         = (length(var.mac_addresses) - 1 >= count.index ? var.mac_addresses[count.index] : null)
   }
 }
 

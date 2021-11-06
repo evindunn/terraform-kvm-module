@@ -44,7 +44,7 @@ output "vms" {
 | Name | Type | Description | Default |
 | ---- | ---- | ----------- | ------- |
 | ansible_playbook | string | Path to ansible playbook to run on first boot | null |
-| base_image | string | Cloud base image for the VMs | [Debian generic cloud image](https://cdimage.debian.org/cdimage/cloud/buster/daily/20210129-530/debian-10-genericcloud-amd64-daily-20210129-530.qcow2) |
+| base_image | string | Cloud base image for the VMs | [Debian generic cloud image](https://cdimage.debian.org/cdimage/cloud/buster/20211011-792/) |
 | data_volumes.count | number | The number of (blank) data disks for each VM | 0 |
 | data_volumes.size | number | The size of each data disk for each VM (bytes) | 1074000000 (1GiB) |
 | cpu_count | number | The number of vcpus for each VM | 2 |

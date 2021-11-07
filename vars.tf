@@ -1,13 +1,18 @@
 # Required
 
-variable "hostname_prefix" {
-  type        = string
-  description = "Prefix for the VM names"
-}
-
 variable "node_count" {
   type        = number
   description = "The number of identical VMs to create"
+}
+
+variable "network_id" {
+  type        = string
+  description = "The libvirt_network ID for the hosts"
+}
+
+variable "ssh_public_key" {
+  type        = string
+  description = "The public key for accessing "
 }
 
 # Optional
@@ -36,6 +41,12 @@ variable "ram_size" {
   default     = 2048 # 2GiB
 }
 
+variable "hostname_prefix" {
+  type        = string
+  description = "Prefix for the VM names"
+  default     = "node"
+}
+
 variable "os_disk_size" {
   type        = number
   description = "The size of the OS disk for each VM"
@@ -52,10 +63,6 @@ variable "data_volumes" {
   }
 }
 
-variable "network_id" {
-  description = "The libvirt_network ID for the hosts"
-}
-
 variable "mac_addresses" {
   description = "A list of mac addresses for the hosts"
   type        = list(string)
@@ -63,7 +70,6 @@ variable "mac_addresses" {
 }
 
 locals {
-  ssh_key_pair_prefix = "terraform_${uuid()}"
   pool_name           = var.hostname_prefix
 }
 

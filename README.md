@@ -40,6 +40,7 @@ output "vms" {
 | ---- | ---- | ----------- |
 | node_count | number | The number of identical vms to create | 
 | network_id | string | The id of the libvirt_network to use for the vms |
+| ssh_public_key | string | The ssh public key for accessing the VMs |
                                                                                            
 # Optional variables
 | Name | Type | Description | Default |

@@ -24,7 +24,7 @@ resource "libvirt_cloudinit_disk" "cloud_inits" {
     "${path.module}/templates/cloud_init.cfg",
     {
       hostname              = "${var.hostname_prefix}${count.index}"
-      ssh_key               = chomp(tls_private_key.cluster_ssh.public_key_openssh)
+      ssh_key               = var.ssh_public_key
       ansible_playbook      = var.ansible_playbook
     }
   )

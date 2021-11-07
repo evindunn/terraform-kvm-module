@@ -5,25 +5,12 @@ See [github.com/evindunn/terraform_k8s](https://github.com/evindunn/terraform_k8
 ```terraform
 ...
 
-module "ceph_domains" {
-  source            = "github.com/evindunn/terraform-kvm-module"
-  hostname_prefix   = "ceph"
-  ssh_public_key    = file(local_file.ssh_key_public.filename)
-  node_count        = 3
-  ansible_playbook  = "./ansible-ceph-prepare.yml"
-  network_id        = libvirt_network.bridge.id
-  data_volumes      = {
-    count = 1
-    size  = 4295000000 # 4GiB
-  }
-}
-
 module "k8s_domains" {
   source            = "github.com/evindunn/terraform-kvm-module"
   hostname_prefix   = "k8s"
   ssh_public_key    = file(local_file.ssh_key_public.filename)
   node_count        = 3
-  ansible_playbook  = "./ansible-k8s-prepare.yml"
+  ansible_playbook  = file("./ansible-k8s-prepare.yml")
   network_id        = libvirt_network.bridge.id
   os_disk_size      = 34360000000 # 32 GiB
 }
@@ -41,7 +28,7 @@ module "k8s_domains" {
 # Optional variables
 | Name | Type | Description | Default |
 | ---- | ---- | ----------- | ------- |
-| ansible_playbook | string | Path to ansible playbook to run on first boot | null |
+| ansible_playbook | string | Contents of an ansible playbook to run on first boot | null |
 | base_image | string | Cloud base image for the VMs | [Debian generic cloud image](https://cdimage.debian.org/cdimage/cloud/buster/20211011-792/) |
 | data_volumes.count | number | The number of (blank) data disks for each VM | 0 |
 | data_volumes.size | number | The size of each data disk for each VM (bytes) | 1074000000 (1GiB) |

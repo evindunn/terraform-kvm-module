@@ -19,7 +19,7 @@ variable "ssh_public_key" {
 
 variable "ansible_playbook" {
   type        = string
-  description = "An optional playbook to run on all hosts"
+  description = "An optional string containing a playbook that will run on all hosts"
   default     = null
 }
 

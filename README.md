@@ -1,38 +1,34 @@
 # Usage
+
+See [github.com/evindunn/terraform_k8s](https://github.com/evindunn/terraform_k8s)
+
 ```terraform
-terraform {
-  required_version = ">= 0.15"
-  required_providers {
-    libvirt = {
-      source  = "dmacvicar/libvirt"
-      version = "0.6.3"
-    }
-    tls = {
-      source = "hashicorp/tls"
-      version = "3.1.0"
-    }
-    local = {
-      source = "hashicorp/local"
-      version = "2.1.0"
-    }
+...
+
+module "ceph_domains" {
+  source            = "github.com/evindunn/terraform-kvm-module"
+  hostname_prefix   = "ceph"
+  ssh_public_key    = file(local_file.ssh_key_public.filename)
+  node_count        = 3
+  ansible_playbook  = "./ansible-ceph-prepare.yml"
+  network_id        = libvirt_network.bridge.id
+  data_volumes      = {
+    count = 1
+    size  = 4295000000 # 4GiB
   }
 }
 
-provider "libvirt" {
-  uri = "qemu:///system"
+module "k8s_domains" {
+  source            = "github.com/evindunn/terraform-kvm-module"
+  hostname_prefix   = "k8s"
+  ssh_public_key    = file(local_file.ssh_key_public.filename)
+  node_count        = 3
+  ansible_playbook  = "./ansible-k8s-prepare.yml"
+  network_id        = libvirt_network.bridge.id
+  os_disk_size      = 34360000000 # 32 GiB
 }
 
-provider "tls" {}
-provider "local" {}
-
-module "vms" {
-  source      = "/path/to/terraform-kvm-module"
-  node_count  = 1
-}
-
-output "vms" {
-  value = module.vms.vms
-}
+...
 ```
 
 # Required variables

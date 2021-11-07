@@ -30,9 +30,10 @@ module "k8s_domains" {
 | ---- | ---- | ----------- | ------- |
 | ansible_playbook | string | Contents of an ansible playbook to run on first boot | null |
 | base_image | string | Cloud base image for the VMs | [Debian generic cloud image](https://cdimage.debian.org/cdimage/cloud/buster/20211011-792/) |
+| cpu_count | number | The number of vcpus for each VM | 2 |
 | data_volumes.count | number | The number of (blank) data disks for each VM | 0 |
 | data_volumes.size | number | The size of each data disk for each VM (bytes) | 1074000000 (1GiB) |
-| cpu_count | number | The number of vcpus for each VM | 2 |
+| extra_files | list | Extra files to add to cloud-init | [] |
 | hostname_prefix | string | The hostname prefix for each VM | node |
 | mac_addresses | list(string) | A list of mac addresses for the VMs | [] |
 | os_disk_size | number | Size of the OS disk for each VM (bytes) | 8590000000 (8 GiB) |

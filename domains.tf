@@ -23,9 +23,10 @@ resource "libvirt_cloudinit_disk" "cloud_inits" {
   user_data       = templatefile(
     "${path.module}/templates/cloud_init.cfg",
     {
-      hostname              = "${var.hostname_prefix}${count.index}"
-      ssh_key               = var.ssh_public_key
-      ansible_playbook      = var.ansible_playbook
+      hostname          = "${var.hostname_prefix}${count.index}"
+      ssh_key           = var.ssh_public_key
+      ansible_playbook  = var.ansible_playbook
+      extra_files       = var.extra_files
     }
   )
 }

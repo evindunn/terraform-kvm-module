@@ -69,6 +69,20 @@ variable "mac_addresses" {
   default     = []
 }
 
+variable "extra_files" {
+  description = "Extra files to write to hosts"
+  default     = []
+  type        = list(
+    object({
+      hostname    = string
+      path        = string
+      owner       = string
+      permissions = string
+      content     = string
+    })
+  )
+}
+
 locals {
   pool_name           = var.hostname_prefix
 }

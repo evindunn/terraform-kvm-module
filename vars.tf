@@ -50,7 +50,7 @@ variable "hostname_prefix" {
 variable "os_disk_size" {
   type        = number
   description = "The size of the OS disk for each VM"
-  default     = 8590000000 # 8GiB
+  default     = 8590000128 # 8GiB
 }
 
 variable "data_volumes" {

@@ -26,7 +26,7 @@ variable "ansible_playbook" {
 variable "base_image" {
   type        = string
   description = "Cloud base image to use for the VMs"
-  default     = "https://cdimage.debian.org/cdimage/cloud/buster/20211011-792/debian-10-genericcloud-amd64-20211011-792.qcow2"
+  default     = "https://cdimage.debian.org/cdimage/cloud/bullseye/latest/debian-11-genericcloud-amd64.qcow2"
 }
 
 variable "cpu_count" {

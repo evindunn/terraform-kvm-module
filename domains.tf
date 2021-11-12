@@ -56,6 +56,7 @@ resource "libvirt_volume" "data_volumes" {
 
 resource "libvirt_domain" "vms" {
   count           = var.node_count
+  autostart       = true
   name            = "${var.hostname_prefix}${count.index}"
   vcpu            = var.cpu_count
   memory          = var.ram_size
